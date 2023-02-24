@@ -1,0 +1,35 @@
+version: 1
+
+services:
+  data:
+    image: couchbase/server:latest
+    environment:
+      - COUCHBASE_CLUSTER_NAME=my-cluster
+      - COUCHBASE_USERNAME=admin
+      - COUCHBASE_PASSWORD=password
+      - COUCHBASE_RAMSIZE=512MB
+      - COUCHBASE_INDEX_STORAGE_SETTING=default
+      - COUCHBASE_BUCKET_TYPE=couchbase
+      - COUCHBASE_BUCKET_NAME=default
+    ports:
+      - 8091:8091
+      - 8092:8092
+      - 8093:8093
+      - 8094:8094
+      - 11210:11210
+    volumes:
+      - ./data:/opt/couchbase/var
+    deploy:
+      replicas: 1
+
+  query:
+    image: couchbase/server:latest
+    environment:
+      - COUCHBASE_CLUSTER_NAME=my-cluster
+      - COUCHBASE_USERNAME=admin
+      - COUCHBASE_PASSWORD=password
+      - COUCHBASE_RAMSIZE=256MB
+      - COUCHBASE_BUCKET_TYPE=memcached
+      - COUCHBASE_BUCKET_NAME=query
+    deploy:
+      replicas: 1
